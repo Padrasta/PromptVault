@@ -54,7 +54,7 @@ def test_update_prompt(client):
     assert res.status_code == 200
     data = res.get_json()
     assert data["title"] == "N"
-    assert data["tags"] == ["x"}
+    assert data["tags"] == ["x"]
 
 
 def test_delete_prompt(client):
