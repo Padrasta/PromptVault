@@ -1,0 +1,25 @@
+# PromptVault – Spec (Kurz)
+
+## Ziele
+- Prompts lokal speichern (JSON)
+- Abrufbar über REST
+- Minimal: Create, List, Get, Update
+
+## Endpunkte
+- `GET /health` → `{ "status": "ok" }`
+- `GET /prompts` → Liste aller Prompts
+- `GET /prompts/<id>` → einzelner Prompt
+- `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
+- `PUT /prompts/<id>` → ersetzt Felder
+- (später) `DELETE /prompts/<id>`
+
+## Datenformat
+```json
+{
+  "id": "pv_0001",
+  "title": "Bugfix-Plan",
+  "body": "Lies README, erstelle Plan, implementiere Schritt 1...",
+  "tags": ["dev","plan"],
+  "created_at": "2025-09-06T06:00:00Z",
+  "updated_at": "2025-09-06T06:00:00Z"
+}
