@@ -1,0 +1,10 @@
+[
+  {
+    "id": "pv_0001",
+    "title": "Beispielprompt",
+    "body": "Erstelle einen 5-Schritte-Plan für Feature X.",
+    "tags": ["demo","plan"],
+    "created_at": "2025-09-06T06:00:00Z",
+    "updated_at": "2025-09-06T06:00:00Z"
+  }
+]
