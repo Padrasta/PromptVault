@@ -1,6 +1,6 @@
 
 # app.py (minimal, läuft sofort)
-```python
+
 from flask import Flask, jsonify, request
 from pathlib import Path
 import json, os, time
