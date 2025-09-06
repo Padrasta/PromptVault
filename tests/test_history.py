@@ -22,6 +22,7 @@ def test_update_creates_history_entry(client):
     assert "updated_at" in entry
 
 
+
 def test_two_updates_create_two_entries(client):
     res = client.post("/prompts", json={"title": "T", "body": "B"})
     pid = res.get_json()["id"]
@@ -71,3 +72,4 @@ def test_history_limit_parameter(client):
     assert entry["title"] == "N1"
     assert entry["body"] == "B"
     assert entry["tags"] == ["a"]
+

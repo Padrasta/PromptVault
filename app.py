@@ -1,4 +1,3 @@
-
 # app.py (minimal, läuft sofort)
 
 from flask import Flask, jsonify, request
