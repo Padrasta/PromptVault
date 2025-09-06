@@ -1,4 +1,3 @@
-
 # app.py (minimal, läuft sofort)
 
 from flask import Flask, jsonify, request
@@ -50,7 +49,30 @@ def get_history(pid):
     items = load_data()
     for it in items:
         if it["id"] == pid:
-            return jsonify(it.get("history", []))
+            history = it.get("history", [])
+            limit = request.args.get("limit")
+            if limit is not None:
+                try:
+                    n = int(limit)
+                except ValueError:
+                    return jsonify({"error": "invalid limit"}), 400
+                if n < 1:
+                    return jsonify({"error": "invalid limit"}), 400
+                history = history[-n:]
+            return jsonify(history)
+    return jsonify({"error": "not found"}), 404
+
+@app.get("/prompts/<pid>/history/<int:index>")
+def get_history_version(pid, index):
+    items = load_data()
+    for it in items:
+        if it["id"] == pid:
+            history = it.get("history", [])
+            try:
+                entry = history[index]
+            except IndexError:
+                return jsonify({"error": "not found"}), 404
+            return jsonify(entry)
     return jsonify({"error": "not found"}), 404
 
 @app.post("/prompts")

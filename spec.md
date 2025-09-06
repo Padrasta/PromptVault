@@ -10,7 +10,9 @@
 - `GET /prompts` → Liste aller Prompts
  - Optionaler Query-Parameter `tag` (kommagetrennt), um nach Tags zu filtern; leer/fehlend → alle Prompts
 - `GET /prompts/<id>` → einzelner Prompt
-- `GET /prompts/<id>/history` → Liste früherer Versionen
+
+- `GET /prompts/<id>/history` → Liste früherer Versionen; optional `?limit=n` → letzte n Einträge
+- `GET /prompts/<id>/history/<version>` → einzelne Version nach Index (0 = älteste, -1 = neueste)
 - `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
 - `PUT /prompts/<id>` → ersetzt Felder
 - `DELETE /prompts/<id>` → löscht einen Prompt
@@ -33,3 +35,4 @@
     }
   ]
 }
+```
