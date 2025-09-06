@@ -6,9 +6,12 @@ from pathlib import Path
 import json
 import os
 import time
+from dotenv import load_dotenv
+load_dotenv()  # lädt Variablen aus .env
 
 app = Flask(__name__)
-DATA_PATH = Path("prompts/sample.json")
+DATA_PATH = Path(os.getenv("DATA_PATH", "prompts/sample.json"))
+port = int(os.getenv("PORT", "8000"))
 DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
 if not DATA_PATH.exists():
     DATA_PATH.write_text(json.dumps([], indent=2), encoding="utf-8")
@@ -92,5 +95,4 @@ def delete_prompt(pid):
     return jsonify({"error": "not found"}), 404
 
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", "8000"))
     app.run(host="127.0.0.1", port=port, debug=True)
