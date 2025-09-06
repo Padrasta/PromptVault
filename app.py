@@ -44,6 +44,15 @@ def get_prompt(pid):
             return jsonify(it)
     return jsonify({"error": "not found"}), 404
 
+
+@app.get("/prompts/<pid>/history")
+def get_history(pid):
+    items = load_data()
+    for it in items:
+        if it["id"] == pid:
+            return jsonify(it.get("history", []))
+    return jsonify({"error": "not found"}), 404
+
 @app.post("/prompts")
 def create_prompt():
     body = request.get_json(force=True, silent=True) or {}
@@ -61,6 +70,7 @@ def create_prompt():
         "tags": tags,
         "created_at": now_iso(),
         "updated_at": now_iso(),
+        "history": [],
     }
     items.append(item)
     save_data(items)
@@ -72,9 +82,18 @@ def update_prompt(pid):
     items = load_data()
     for it in items:
         if it["id"] == pid:
+            prev = {
+                "title": it["title"],
+                "body": it["body"],
+                "updated_at": it.get("updated_at") or now_iso(),
+            }
+            if "tags" in it:
+                prev["tags"] = list(it.get("tags", []))
+            it.setdefault("history", []).append(prev)
+
             it["title"] = body.get("title", it["title"])
-            it["body"]  = body.get("body", it["body"])
-            it["tags"]  = body.get("tags", it["tags"])
+            it["body"] = body.get("body", it["body"])
+            it["tags"] = body.get("tags", it.get("tags"))
             it["updated_at"] = now_iso()
             save_data(items)
             return jsonify(it)
