@@ -3,7 +3,9 @@
 
 from flask import Flask, jsonify, request
 from pathlib import Path
-import json, os, time
+import json
+import os
+import time
 
 app = Flask(__name__)
 DATA_PATH = Path("prompts/sample.json")
@@ -70,6 +72,17 @@ def update_prompt(pid):
             it["updated_at"] = now_iso()
             save_data(items)
             return jsonify(it)
+    return jsonify({"error": "not found"}), 404
+
+
+@app.delete("/prompts/<pid>")
+def delete_prompt(pid):
+    items = load_data()
+    for idx, it in enumerate(items):
+        if it["id"] == pid:
+            items.pop(idx)
+            save_data(items)
+            return jsonify({"status": "deleted"})
     return jsonify({"error": "not found"}), 404
 
 if __name__ == "__main__":
