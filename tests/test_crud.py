@@ -63,4 +63,4 @@ def test_delete_prompt(client):
 
     res = client.delete(f"/prompts/{pid}")
     assert res.status_code == 200
-    assert res.get
+    assert res.get_json()["status"] == "deleted"
