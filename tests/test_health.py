@@ -1,5 +1,4 @@
-def test_health(client=None):
-    # Minimal ohne PyTest-Fixtures: Direkt HTTP simulieren ist hier optional.
-    # Dieser Test ist als Platzhalter gedacht.
-    assert True
-
+def test_health(client):
+    res = client.get("/health")
+    assert res.status_code == 200
+    assert res.get_json()["status"] == "ok"

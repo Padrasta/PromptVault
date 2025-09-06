@@ -8,10 +8,12 @@
 ## Endpunkte
 - `GET /health` → `{ "status": "ok" }`
 - `GET /prompts` → Liste aller Prompts
+  - Optionaler Query-Parameter `tag` (kommagetrennt), um nach Tags zu filtern; leer/fehlend → alle Prompts
+  - Beispiele: `GET /prompts?tag=demo` → nur Prompts mit Tag "demo"; `GET /prompts?tag=demo,plan` → Prompts mit mindestens einem dieser Tags
 - `GET /prompts/<id>` → einzelner Prompt
 - `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
 - `PUT /prompts/<id>` → ersetzt Felder
-- (später) `DELETE /prompts/<id>`
+- `DELETE /prompts/<id>` → löscht einen Prompt
 
 ## Datenformat
 ```json
