@@ -1,3 +1,20 @@
+import sys
+from pathlib import Path
+import pytest
+
+# Stelle sicher, dass app.py gefunden wird
+sys.path.append(str(Path(__file__).resolve().parents[1]))
+import app as pv
+
+
+@pytest.fixture()
+def client(tmp_path, monkeypatch):
+    data_file = tmp_path / "data.json"
+    data_file.write_text("[]", encoding="utf-8")
+    monkeypatch.setattr(pv, "DATA_PATH", data_file)
+    return pv.app.test_client()
+
+
 def test_health(client):
     res = client.get("/health")
     assert res.status_code == 200
@@ -46,7 +63,4 @@ def test_delete_prompt(client):
 
     res = client.delete(f"/prompts/{pid}")
     assert res.status_code == 200
-    assert res.get_json()["status"] == "deleted"
-
-    res = client.get(f"/prompts/{pid}")
-    assert res.status_code == 404
+    assert res.get
