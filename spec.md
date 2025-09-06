@@ -12,8 +12,9 @@
   - Beispiele: `GET /prompts?tag=demo` → nur Prompts mit Tag "demo"; `GET /prompts?tag=demo,plan` → Prompts mit mindestens einem dieser Tags
 - `GET /prompts/<id>` → einzelner Prompt
 - `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
-- `PUT /prompts/<id>` → ersetzt Felder
+- `PUT /prompts/<id>` → ersetzt Felder, vorherige Version landet in `history`
 - `DELETE /prompts/<id>` → löscht einen Prompt
+- `GET /prompts/<id>/history` → Liste vergangener Versionen
 
 ## Datenformat
 ```json
@@ -22,6 +23,14 @@
   "title": "Bugfix-Plan",
   "body": "Lies README, erstelle Plan, implementiere Schritt 1...",
   "tags": ["dev","plan"],
+  "history": [
+    {
+      "title": "Älterer Titel",
+      "body": "Älterer Body",
+      "tags": ["dev"],
+      "updated_at": "2025-09-06T06:00:00Z"
+    }
+  ],
   "created_at": "2025-09-06T06:00:00Z",
   "updated_at": "2025-09-06T06:00:00Z"
 }
