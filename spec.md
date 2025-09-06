@@ -11,7 +11,7 @@
 - `GET /prompts/<id>` → einzelner Prompt
 - `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
 - `PUT /prompts/<id>` → ersetzt Felder
-- (später) `DELETE /prompts/<id>`
+- `DELETE /prompts/<id>` → löscht einen Prompt
 
 ## Datenformat
 ```json
