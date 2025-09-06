@@ -8,6 +8,7 @@
 ## Endpunkte
 - `GET /health` → `{ "status": "ok" }`
 - `GET /prompts` → Liste aller Prompts
+ - Optionaler Query-Parameter `tag` (kommagetrennt), um nach Tags zu filtern; leer/fehlend → alle Prompts
 - `GET /prompts/<id>` → einzelner Prompt
 - `POST /prompts` → `{ title, body, tags?[] }` → erstellt, gibt `id` zurück
 - `PUT /prompts/<id>` → ersetzt Felder

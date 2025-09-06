@@ -28,7 +28,13 @@ def health():
 
 @app.get("/prompts")
 def list_prompts():
-    return jsonify(load_data())
+    items = load_data()
+    tag_param = request.args.get("tag", "").strip()
+    if tag_param:
+        tags = {t.strip() for t in tag_param.split(",") if t.strip()}
+        if tags:
+            items = [p for p in items if any(t in p.get("tags", []) for t in tags)]
+    return jsonify(items)
 
 @app.get("/prompts/<pid>")
 def get_prompt(pid):

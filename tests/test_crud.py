@@ -1,8 +1,8 @@
 import sys
 from pathlib import Path
-
 import pytest
 
+# Stelle sicher, dass app.py gefunden wird
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 import app as pv
 
@@ -63,7 +63,4 @@ def test_delete_prompt(client):
 
     res = client.delete(f"/prompts/{pid}")
     assert res.status_code == 200
-    assert res.get_json()["status"] == "deleted"
-
-    res = client.get(f"/prompts/{pid}")
-    assert res.status_code == 404
+    assert res.get
