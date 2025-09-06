@@ -1,3 +1,4 @@
+
 # app.py (minimal, läuft sofort)
 
 from flask import Flask, jsonify, request
@@ -49,30 +50,7 @@ def get_history(pid):
     items = load_data()
     for it in items:
         if it["id"] == pid:
-            history = it.get("history", [])
-            limit = request.args.get("limit")
-            if limit is not None:
-                try:
-                    n = int(limit)
-                except ValueError:
-                    return jsonify({"error": "invalid limit"}), 400
-                if n < 1:
-                    return jsonify({"error": "invalid limit"}), 400
-                history = history[-n:]
-            return jsonify(history)
-    return jsonify({"error": "not found"}), 404
-
-@app.get("/prompts/<pid>/history/<int:index>")
-def get_history_version(pid, index):
-    items = load_data()
-    for it in items:
-        if it["id"] == pid:
-            history = it.get("history", [])
-            try:
-                entry = history[index]
-            except IndexError:
-                return jsonify({"error": "not found"}), 404
-            return jsonify(entry)
+            return jsonify(it.get("history", []))
     return jsonify({"error": "not found"}), 404
 
 @app.post("/prompts")
@@ -90,9 +68,9 @@ def create_prompt():
         "title": title,
         "body": text,
         "tags": tags,
+        "history": [],
         "created_at": now_iso(),
         "updated_at": now_iso(),
-        "history": [],
     }
     items.append(item)
     save_data(items)
@@ -104,19 +82,20 @@ def update_prompt(pid):
     items = load_data()
     for it in items:
         if it["id"] == pid:
-            prev = {
+            ts = now_iso()
+            entry = {
                 "title": it["title"],
                 "body": it["body"],
-                "updated_at": it.get("updated_at") or now_iso(),
+                "updated_at": ts,
             }
-            if "tags" in it:
-                prev["tags"] = list(it.get("tags", []))
-            it.setdefault("history", []).append(prev)
+            if it.get("tags"):
+                entry["tags"] = it["tags"]
+            it.setdefault("history", []).append(entry)
 
             it["title"] = body.get("title", it["title"])
             it["body"] = body.get("body", it["body"])
-            it["tags"] = body.get("tags", it.get("tags"))
-            it["updated_at"] = now_iso()
+            it["tags"] = body.get("tags", it.get("tags", []))
+            it["updated_at"] = ts
             save_data(items)
             return jsonify(it)
     return jsonify({"error": "not found"}), 404
