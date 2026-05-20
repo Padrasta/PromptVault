@@ -18,6 +18,12 @@ def test_no_tag_returns_all(client):
     assert {p["title"] for p in res.get_json()} == {"T1", "T2", "T3"}
 
 
+def test_empty_tag_returns_all(client):
+    seed_prompts(client)
+    res = client.get("/prompts?tag=")
+    assert {p["title"] for p in res.get_json()} == {"T1", "T2", "T3"}
+
+
 def test_single_tag_filter(client):
     seed_prompts(client)
     res = client.get("/prompts?tag=demo")
